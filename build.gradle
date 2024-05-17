@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+}
+
+group = 'your.group.id'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    seleniumJavaVersion = '4.21.0'
+    logbackVersion = '1.4.14'
+    webdriverManagerVersion = '5.6.3'
+    testngVersion = '7.9.0'
+    jacksonVersion = '2.16.1'
+    mavenCompilerVersion = '3.11.0'
+    mavenDependencyVersion = '3.6.0'
+    mavenJarVersion = '3.3.0'
+    mavenSurefireVersion = '3.1.2'
+    mavenResourcesPluginVersion = '3.3.1'
+    packageDirectory = "$buildDir/docker-resources"
+}
+
+dependencies {
+    implementation "org.seleniumhq.selenium:selenium-java:${seleniumJavaVersion}"
+    implementation "ch.qos.logback:logback-classic:${logbackVersion}"
+    testImplementation "io.github.bonigarcia:webdrivermanager:${webdriverManagerVersion}"
+    testImplementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    testImplementation "org.testng:testng:${testngVersion}"
+}
+
+test {
+    useTestNG() {
+        suites 'test-suite.xml'
+    }
+    systemProperty 'browser', 'chrome'
+    reports {
+        html.destination = file("$buildDir/reports/test")
+    }
+}
+
+task copyDependencies(type: Copy) {
+    from configurations.runtimeClasspath
+    into "$packageDirectory/libs"
+}
+
+task copyResources(type: Copy) {
+    from 'src/test/resources'
+    into "$packageDirectory"
+}
+
+jar {
+    destinationDirectory = file(packageDirectory)
+}
+
+test.doLast {
+    copyDependencies.execute()
+    copyResources.execute()
+}
