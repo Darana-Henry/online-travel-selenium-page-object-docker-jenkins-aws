@@ -1,4 +1,4 @@
-package flightreservation;
+package reservation;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
