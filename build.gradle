@@ -20,15 +20,19 @@ ext {
     mavenJarVersion = '3.3.0'
     mavenSurefireVersion = '3.1.2'
     mavenResourcesPluginVersion = '3.3.1'
+    lombokVersion = '1.18.24'
     packageDirectory = "$buildDir/docker-resources"
 }
 
 dependencies {
     implementation "org.seleniumhq.selenium:selenium-java:${seleniumJavaVersion}"
     implementation "ch.qos.logback:logback-classic:${logbackVersion}"
+    implementation 'org.projectlombok:lombok:1.18.20'
     testImplementation "io.github.bonigarcia:webdrivermanager:${webdriverManagerVersion}"
     testImplementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
     testImplementation "org.testng:testng:${testngVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
 }
 
 test {
