@@ -32,14 +32,19 @@ dependencies {
     testImplementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
     testImplementation "org.testng:testng:${testngVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
 }
 
 test {
     useTestNG() {
-        suites 'test-suite.xml'
+        suites('src/test/resources/test-suites/vendor.xml', 'src/test/resources/test-suites/reservation.xml')
     }
     systemProperty 'browser', 'chrome'
+    systemProperty 'use.selenium.grid', 'false'
+
     reports {
         html.destination = file("$buildDir/reports/test")
     }
@@ -59,7 +64,7 @@ jar {
     destinationDirectory = file(packageDirectory)
 }
 
-test.doLast {
-    copyDependencies.execute()
-    copyResources.execute()
-}
+//test.doLast {
+//    copyDependencies.execute()
+//    copyResources.execute()
+//}
